@@ -115,9 +115,15 @@ public class HashTable<Key, Value> implements Map<Key, Value> {
         private final Value value;
         private boolean isDeleted = false;
 
-        public TableEntry(Key key, Value value) {
+        TableEntry(Key key, Value value) {
             this.key = key;
             this.value = value;
+        }
+
+        TableEntry(TableEntry<Key, Value> other){
+            key = other.key;
+            value = other.value;
+            isDeleted = other.isDeleted;
         }
     }
 
@@ -129,6 +135,16 @@ public class HashTable<Key, Value> implements Map<Key, Value> {
     public HashTable(int size) {
         this.size = size;
         table = new TableEntry[size];
+    }
+
+    public HashTable(HashTable<Key, Value> other){
+        size = other.size;
+        table = new TableEntry[other.table.length];
+        for(int i = 0; i < table.length; i++){
+            if(other.table[i] != null) {
+                table[i] = new TableEntry<>(other.table[i]);
+            }
+        }
     }
 
     @Override
